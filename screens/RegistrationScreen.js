@@ -8,9 +8,11 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { SvgXml } from "react-native-svg";
-import { KeyboardAvoidingView } from "react-native";
+import { useState } from "react";
 
 const iconSvg = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
   <circle cx="12.5" cy="12.5" r="12" fill="white" stroke="#FF6C00"/>
@@ -18,34 +20,68 @@ const iconSvg = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xml
 </svg>`;
 
 export default function RegistrationScreen() {
+  const [password, setPassword] = useState("");
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
+
+  const togglePassword = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.wrapper}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <View style={styles.container}>
-        <View style={styles.form}>
-          <TouchableOpacity style={styles.showPasswordButton}>
-            <Text style={styles.showPasswordButtonText}>Показати</Text>
-          </TouchableOpacity>
-          <Text style={styles.title}>Реєстрація</Text>
-          <TextInput style={styles.input} placeholder="Логін"></TextInput>
-          <TextInput
-            style={styles.input}
-            placeholder="Адреса електронної пошти"
-          ></TextInput>
-          <View style={styles.passwordInputContainer}>
-            <TextInput style={styles.passwordInput} placeholder="Пароль" />
-          </View>
+        <View
+          style={{
+            ...styles.formWrapper,
+            paddingBottom: isOpenKeyboard ? 10 : 111,
+            height: isOpenKeyboard ? 400 : "auto",
+          }}
+        >
+          <View style={styles.form}>
+            <View style={styles.userPhoto}>
+              <TouchableOpacity style={styles.iconContainer}>
+                <SvgXml xml={iconSvg} width={25} height={25} />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.title}>Реєстрація</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Логін"
+              onFocus={() => setIsOpenKeyboard(true)}
+            ></TextInput>
+            <TextInput
+              style={styles.input}
+              placeholder="Адреса електронної пошти"
+              onFocus={() => setIsOpenKeyboard(true)}
+            ></TextInput>
+            <View style={styles.passwordInputContainer}>
+              <TextInput
+                style={styles.passwordInput}
+                placeholder="Пароль"
+                secureTextEntry={secureTextEntry}
+                onChange={setPassword}
+                onFocus={() => setIsOpenKeyboard(true)}
+                onBlur={() => setIsOpenKeyboard(false)}
+                value={password}
+              />
+              <TouchableOpacity style={styles.showPasswordButton}>
+                <Text
+                  style={styles.showPasswordButtonText}
+                  onPress={togglePassword}
+                >
+                  {secureTextEntry ? "Показати" : "Сховати"}
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-          <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>Зареєструватися</Text>
-          </Pressable>
-          <Text style={styles.text}>Вже є акаунт? Увійти</Text>
-        </View>
-        <View style={styles.userPhoto}>
-          <View style={styles.iconContainer}>
-            <SvgXml xml={iconSvg} width={25} height={25} />
+            <Pressable style={styles.button}>
+              <Text style={styles.buttonText}>Зареєструватися</Text>
+            </Pressable>
+            <Text style={styles.text}>Вже є акаунт? Увійти</Text>
           </View>
         </View>
       </View>
@@ -54,15 +90,27 @@ export default function RegistrationScreen() {
 }
 
 const styles = StyleSheet.create({
+  formWrapper: {
+    paddingTop: 32,
+    paddingLeft: 16,
+    paddingRight: 16,
+    backgroundColor: "white",
+    width: "100%",
+    position: "absolute",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
   wrapper: {
     flex: 1,
   },
   container: {
     flex: 1,
+    justifyContent: "flex-end",
   },
   form: {
     flex: 1,
-    marginTop: 263,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     backgroundColor: "#fff",
@@ -138,9 +186,9 @@ const styles = StyleSheet.create({
   },
   userPhoto: {
     position: "absolute",
-    top: 203,
+    top: -90,
     left: "50%",
-    transform: [{ translateX: -60 }], // Half of the width (120 / 2)
+    transform: [{ translateX: -60 }],
     width: 120,
     height: 120,
     backgroundColor: "#F6F6F6",

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -6,50 +7,96 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
-import { KeyboardAvoidingView } from "react-native";
 
 export default function LoginScreen() {
-  return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <ScrollView style={styles.form}>
-          <Text style={styles.title}>Увійти</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Адреса електронної пошти"
-          ></TextInput>
-          <View style={styles.passwordInputContainer}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="Пароль"
-              // secureTextEntry={!showPassword}
-            />
-            <TouchableOpacity
-              style={styles.showPasswordButton}
-              // onPress={toggleShowPassword}
-            >
-              <Text style={styles.showPasswordButtonText}>Показати</Text>
-            </TouchableOpacity>
-          </View>
+ const [password, setPassword] = useState("");
+ const [secureTextEntry, setSecureTextEntry] = useState(true);
+ const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
 
-          <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>Увійти</Text>
-          </Pressable>
-          <Text style={styles.text}>Немає акаунту? Зареєструватись</Text>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </View>
+  const togglePassword = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
+
+
+  return (
+    <KeyboardAvoidingView
+      style={styles.wrapper}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View style={styles.container}>
+        <View
+          style={{
+            ...styles.formWrapper,
+            paddingBottom: isOpenKeyboard ? 10 : 111,
+            height: isOpenKeyboard ? 270 : "auto",
+          }}
+        >
+          <View style={styles.form}>
+            <Text style={styles.title}>Увійти</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Адреса електронної пошти"
+              onFocus={() => setIsOpenKeyboard(true)}
+            ></TextInput>
+            <View style={styles.passwordInputContainer}>
+              <TextInput
+                style={styles.passwordInput}
+                placeholder="Пароль"
+                secureTextEntry={secureTextEntry}
+                onChange={setPassword}
+                onFocus={() => setIsOpenKeyboard(true)}
+                onBlur={() => setIsOpenKeyboard(false)}
+                value={password}
+                // secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity
+                style={styles.showPasswordButton}
+                onPress={togglePassword}
+              >
+                <Text style={styles.showPasswordButtonText}>
+                  {secureTextEntry ? "Показати" : "Сховати"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <Pressable style={styles.button}>
+              <Text style={styles.buttonText}>Увійти</Text>
+            </Pressable>
+            <Text style={styles.text}>Немає акаунту? Зареєструватись</Text>
+          </View>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  formWrapper: {
+    paddingTop: 32,
+    paddingLeft: 16,
+    paddingRight: 16,
+    backgroundColor: "white",
+    width: "100%",
+    position: "absolute",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+
+  wrapper: {
     flex: 1,
   },
+  container: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+
   form: {
     flex: 1,
-    marginTop: 370,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     backgroundColor: "#fff",
