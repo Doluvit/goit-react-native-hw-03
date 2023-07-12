@@ -40,6 +40,7 @@ export default function LoginScreen() {
               style={styles.input}
               placeholder="Адреса електронної пошти"
               onFocus={() => setIsOpenKeyboard(true)}
+              onBlur={() => setIsOpenKeyboard(false)}
             ></TextInput>
             <View style={styles.passwordInputContainer}>
               <TextInput
@@ -50,7 +51,6 @@ export default function LoginScreen() {
                 onFocus={() => setIsOpenKeyboard(true)}
                 onBlur={() => setIsOpenKeyboard(false)}
                 value={password}
-                // secureTextEntry={!showPassword}
               />
               <TouchableOpacity
                 style={styles.showPasswordButton}
