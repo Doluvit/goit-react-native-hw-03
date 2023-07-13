@@ -1,8 +1,7 @@
+import { SvgXml } from "react-native-svg";
+import { useState } from "react";
 import {
-  Image,
-  Button,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -11,8 +10,6 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { SvgXml } from "react-native-svg";
-import { useState } from "react";
 
 const iconSvg = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
   <circle cx="12.5" cy="12.5" r="12" fill="white" stroke="#FF6C00"/>
@@ -192,7 +189,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    maxWidth: "100%",
     height: 50,
     borderWidth: 2,
     marginLeft: 16,
