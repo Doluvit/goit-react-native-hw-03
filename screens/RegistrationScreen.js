@@ -52,11 +52,13 @@ export default function RegistrationScreen() {
               style={styles.input}
               placeholder="Логін"
               onFocus={() => setIsOpenKeyboard(true)}
+              onBlur={() => setIsOpenKeyboard(false)}
             ></TextInput>
             <TextInput
               style={styles.input}
               placeholder="Адреса електронної пошти"
               onFocus={() => setIsOpenKeyboard(true)}
+              onBlur={() => setIsOpenKeyboard(false)}
             ></TextInput>
             <View style={styles.passwordInputContainer}>
               <TextInput
