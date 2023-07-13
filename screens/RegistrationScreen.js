@@ -31,34 +31,42 @@ export default function RegistrationScreen() {
     setSecureTextEntry(!secureTextEntry);
   };
 
-  const handleFocusLogin = () => {
-    setIsFocusedLogin(true);
-    setIsOpenKeyboard(true);
+  const handleFocus = (input) => {
+    switch (input) {
+      case "login":
+        setIsFocusedLogin(true);
+        setIsOpenKeyboard(true);
+        break;
+      case "email":
+        setIsFocusedEmail(true);
+        setIsOpenKeyboard(true);
+        break;
+      case "password":
+        setIsFocusedPassword(true);
+        setIsOpenKeyboard(true);
+        break;
+      default:
+        break;
+    }
   };
 
-  const handleBlurLogin = () => {
-    setIsFocusedLogin(false);
-    setIsOpenKeyboard(false);
-  };
-
-  const handleFocusEmail = () => {
-    setIsFocusedEmail(true);
-    setIsOpenKeyboard(true);
-  };
-
-  const handleBlurEmail = () => {
-    setIsFocusedEmail(false);
-    setIsOpenKeyboard(false);
-  };
-
-  const handleFocusPassword = () => {
-    setIsFocusedPassword(true);
-    setIsOpenKeyboard(true);
-  };
-
-  const handleBlurPassword = () => {
-    setIsFocusedPassword(false);
-    setIsOpenKeyboard(false);
+  const handleBlur = (input) => {
+    switch (input) {
+      case "login":
+        setIsFocusedLogin(false);
+        setIsOpenKeyboard(false);
+        break;
+      case "email":
+        setIsFocusedEmail(false);
+        setIsOpenKeyboard(false);
+        break;
+      case "password":
+        setIsFocusedPassword(false);
+        setIsOpenKeyboard(false);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -84,29 +92,28 @@ export default function RegistrationScreen() {
             <TextInput
               style={[styles.input, isFocusedLogin && styles.inputFocused]}
               placeholder="Логін"
-              onFocus={handleFocusLogin}
-              onBlur={handleBlurLogin}
+              onFocus={() => handleFocus("login")}
+              onBlur={() => handleBlur("login")}
             ></TextInput>
             <TextInput
               style={[styles.input, isFocusedEmail && styles.inputFocused]}
               placeholder="Адреса електронної пошти"
-              onFocus={handleFocusEmail}
-              onBlur={handleBlurEmail}
+              onFocus={() => handleFocus("email")}
+              onBlur={() => handleBlur("email")}
             ></TextInput>
             <View
               style={[
                 styles.passwordInputContainer,
                 isFocusedPassword && styles.inputFocused,
               ]}
-              onFocus={handleFocusPassword}
             >
               <TextInput
                 style={styles.passwordInput}
                 placeholder="Пароль"
                 secureTextEntry={secureTextEntry}
                 onChangeText={(text) => setPassword(text)}
-                onFocus={handleFocusPassword}
-                onBlur={handleBlurPassword}
+                onFocus={() => handleFocus("password")}
+                onBlur={() => handleBlur("password")}
                 value={password}
               ></TextInput>
               <TouchableOpacity style={styles.showPasswordButton}>
