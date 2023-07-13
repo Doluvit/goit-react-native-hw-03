@@ -21,11 +21,44 @@ const iconSvg = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xml
 
 export default function RegistrationScreen() {
   const [password, setPassword] = useState("");
+  const [isFocusedLogin, setIsFocusedLogin] = useState(false);
+  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
 
   const togglePassword = () => {
     setSecureTextEntry(!secureTextEntry);
+  };
+
+  const handleFocusLogin = () => {
+    setIsFocusedLogin(true);
+    setIsOpenKeyboard(true);
+  };
+
+  const handleBlurLogin = () => {
+    setIsFocusedLogin(false);
+    setIsOpenKeyboard(false);
+  };
+
+  const handleFocusEmail = () => {
+    setIsFocusedEmail(true);
+    setIsOpenKeyboard(true);
+  };
+
+  const handleBlurEmail = () => {
+    setIsFocusedEmail(false);
+    setIsOpenKeyboard(false);
+  };
+
+  const handleFocusPassword = () => {
+    setIsFocusedPassword(true);
+    setIsOpenKeyboard(true);
+  };
+
+  const handleBlurPassword = () => {
+    setIsFocusedPassword(false);
+    setIsOpenKeyboard(false);
   };
 
   return (
@@ -49,27 +82,33 @@ export default function RegistrationScreen() {
             </View>
             <Text style={styles.title}>Реєстрація</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, isFocusedLogin && styles.inputFocused]}
               placeholder="Логін"
-              onFocus={() => setIsOpenKeyboard(true)}
-              onBlur={() => setIsOpenKeyboard(false)}
+              onFocus={handleFocusLogin}
+              onBlur={handleBlurLogin}
             ></TextInput>
             <TextInput
-              style={styles.input}
+              style={[styles.input, isFocusedEmail && styles.inputFocused]}
               placeholder="Адреса електронної пошти"
-              onFocus={() => setIsOpenKeyboard(true)}
-              onBlur={() => setIsOpenKeyboard(false)}
+              onFocus={handleFocusEmail}
+              onBlur={handleBlurEmail}
             ></TextInput>
-            <View style={styles.passwordInputContainer}>
+            <View
+              style={[
+                styles.passwordInputContainer,
+                isFocusedPassword && styles.inputFocused,
+              ]}
+              onFocus={handleFocusPassword}
+            >
               <TextInput
                 style={styles.passwordInput}
                 placeholder="Пароль"
                 secureTextEntry={secureTextEntry}
-                onChange={setPassword}
-                onFocus={() => setIsOpenKeyboard(true)}
-                onBlur={() => setIsOpenKeyboard(false)}
+                onChangeText={(text) => setPassword(text)}
+                onFocus={handleFocusPassword}
+                onBlur={handleBlurPassword}
                 value={password}
-              />
+              ></TextInput>
               <TouchableOpacity style={styles.showPasswordButton}>
                 <Text
                   style={styles.showPasswordButtonText}
@@ -133,19 +172,22 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     marginLeft: 16,
     marginRight: 16,
-
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#E8E8E8",
     borderRadius: 10,
     padding: 10,
     backgroundColor: "#F6F6F6",
   },
+  inputFocused: {
+    borderColor: "orange",
+  },
   passwordInputContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    maxWidth: "100%",
     height: 50,
-    borderWidth: 1,
+    borderWidth: 2,
     marginLeft: 16,
     marginRight: 16,
     borderColor: "#E8E8E8",
@@ -154,8 +196,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
   },
   passwordInput: {
-    // flex: 1,
-    // height: 50,
+    height: 50,
+    flex: 1,
+    borderWidth: 0,
   },
   showPasswordButton: {
     marginLeft: 10,
