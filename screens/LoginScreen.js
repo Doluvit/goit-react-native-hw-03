@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 
 export default function LoginScreen() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocusedEmail, setIsFocusedEmail] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
@@ -51,6 +53,10 @@ export default function LoginScreen() {
     }
   };
 
+   const onLogin = () => {
+     Alert.alert("Credentials", ` Email: ${email}, Password: ${password}`);
+   };
+
   return (
     <KeyboardAvoidingView
       style={styles.wrapper}
@@ -68,9 +74,11 @@ export default function LoginScreen() {
             <Text style={styles.title}>Увійти</Text>
             <TextInput
               style={[styles.input, isFocusedEmail && styles.inputFocused]}
-              placeholder="Адреса електронної пошти"
+              value={email}
+              onChangeText={setEmail}
               onFocus={() => handleFocus("email")}
               onBlur={() => handleBlur("email")}
+              placeholder="Адреса електронної пошти"
             ></TextInput>
             <View
               style={[
@@ -80,12 +88,12 @@ export default function LoginScreen() {
             >
               <TextInput
                 style={styles.passwordInput}
-                placeholder="Пароль"
+                value={password}
+                onChangeText={setPassword}
                 secureTextEntry={secureTextEntry}
-                onChangeText={(text) => setPassword(text)}
                 onFocus={() => handleFocus("password")}
                 onBlur={() => handleBlur("password")}
-                value={password}
+                placeholder="Пароль"
               />
               <TouchableOpacity
                 style={styles.showPasswordButton}
@@ -97,7 +105,7 @@ export default function LoginScreen() {
               </TouchableOpacity>
             </View>
 
-            <Pressable style={styles.button}>
+            <Pressable style={styles.button} onPress={onLogin}>
               <Text style={styles.buttonText}>Увійти</Text>
             </Pressable>
             <Text style={styles.text}>Немає акаунту? Зареєструватись</Text>

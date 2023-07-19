@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 
 const iconSvg = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,6 +18,8 @@ const iconSvg = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xml
 </svg>`;
 
 export default function RegistrationScreen() {
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocusedLogin, setIsFocusedLogin] = useState(false);
   const [isFocusedEmail, setIsFocusedEmail] = useState(false);
@@ -66,6 +69,10 @@ export default function RegistrationScreen() {
     }
   };
 
+const onLogin = () => {
+  Alert.alert("Credentials", `Login: ${login},  Email: ${email}, Password: ${password}`);
+};
+
   return (
     <KeyboardAvoidingView
       style={styles.wrapper}
@@ -88,15 +95,19 @@ export default function RegistrationScreen() {
             <Text style={styles.title}>Реєстрація</Text>
             <TextInput
               style={[styles.input, isFocusedLogin && styles.inputFocused]}
-              placeholder="Логін"
+              value={login}
+              onChangeText={setLogin}
               onFocus={() => handleFocus("login")}
               onBlur={() => handleBlur("login")}
+              placeholder="Логін"
             ></TextInput>
             <TextInput
               style={[styles.input, isFocusedEmail && styles.inputFocused]}
-              placeholder="Адреса електронної пошти"
+              value={email}
+              onChangeText={setEmail}
               onFocus={() => handleFocus("email")}
               onBlur={() => handleBlur("email")}
+              placeholder="Адреса електронної пошти"
             ></TextInput>
             <View
               style={[
@@ -106,12 +117,12 @@ export default function RegistrationScreen() {
             >
               <TextInput
                 style={styles.passwordInput}
-                placeholder="Пароль"
+                value={password}
+                onChangeText={setPassword}
                 secureTextEntry={secureTextEntry}
-                onChangeText={(text) => setPassword(text)}
                 onFocus={() => handleFocus("password")}
                 onBlur={() => handleBlur("password")}
-                value={password}
+                placeholder="Пароль"
               ></TextInput>
               <TouchableOpacity style={styles.showPasswordButton}>
                 <Text
@@ -123,7 +134,7 @@ export default function RegistrationScreen() {
               </TouchableOpacity>
             </View>
 
-            <Pressable style={styles.button}>
+            <Pressable style={styles.button} onPress={onLogin}>
               <Text style={styles.buttonText}>Зареєструватися</Text>
             </Pressable>
             <Text style={styles.text}>Вже є акаунт? Увійти</Text>
